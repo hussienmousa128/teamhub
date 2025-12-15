@@ -17,6 +17,12 @@ type LoginResponse = {
   refreshToken: string
 }
 
+type MeResponse = {
+  id       : number,
+  username : string,
+  email    : string
+}
+
 
 @Injectable({
   providedIn: 'root',
@@ -37,5 +43,11 @@ export class AuthService {
     })
     );
   }
-
+  me():Observable<MeResponse>{
+    const url = `${this.baseUrl}/auth/me`;
+    return this.http.get<MeResponse>(url).pipe(
+      tap((me)=> this.storage.set(STORAGE_KEYS.userBasic,JSON.stringify(me))
+      )
+    );
+  }
 }
