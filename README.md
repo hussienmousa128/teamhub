@@ -1,1 +1,3 @@
-# teamhub
+TeamHub Angular MVP
+
+API: DummyJSON
