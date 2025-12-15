@@ -1,6 +1,8 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthStateService } from '../auth/auth-state.service';
+
+
 const shouldSkipAuth = (url : string) =>
     url.includes('/auth/login') || url.includes('/auth/refresh');
 
