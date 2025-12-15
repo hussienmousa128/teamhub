@@ -18,4 +18,7 @@ export class AuthStateService {
   this.storage.remove(STORAGE_KEYS.refreshToken);
   this.storage.remove(STORAGE_KEYS.userBasic);
  }
+ get accessToken() : string | null{
+  return this.storage.get(STORAGE_KEYS.accessToken);
+ }
 }
