@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 export type LoginError = 'network' | 'invalid';
 
@@ -13,6 +14,8 @@ export type LoginError = 'network' | 'invalid';
   styleUrl: './login.scss',
 })
 export class Login {
+
+  constructor(private router : Router){}
 
   errorMessage: string | null = null;
   isSubmitting : boolean = false;
@@ -46,6 +49,7 @@ onSubmit(){
 
   setTimeout(()=>{
     this.isSubmitting = false;
+    this.router.navigateByUrl('/app/users');
   },1000);
 }
 }
