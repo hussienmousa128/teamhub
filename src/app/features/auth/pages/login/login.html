@@ -11,5 +11,5 @@
         الرجاء ملئ الحقل المطلوب
       </span>
   </div>
-  <button type="submit" [disabled]="form.invalid"> Submit</button>
+  <button type="submit" [disabled]="isSubmitting"> {{ isSubmitting ? 'Submitting...' : 'Submit' }}</button>
 </form>
