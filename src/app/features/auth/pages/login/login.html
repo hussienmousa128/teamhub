@@ -1,1 +1,15 @@
-<p>login works!</p>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" >
+  <div>
+      <input formControlName="username" type="text" placeholder="username" >
+      <span *ngIf="form.controls.username.touched && form.controls.username.hasError('required')">
+        الرجاء ملئ الحقل المطلوب
+      </span>
+  </div>
+  <div>
+      <input formControlName="password" type="password" placeholder="password">
+      <span *ngIf="form.controls.password.touched && form.controls.password.hasError('required')">
+        الرجاء ملئ الحقل المطلوب
+      </span>
+  </div>
+  <button type="submit" [disabled]="form.invalid"> Submit</button>
+</form>
