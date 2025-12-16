@@ -3,13 +3,13 @@
     <span *ngIf="errorMessage">{{errorMessage}}</span>
   </div>
   <div>
-      <input formControlName="username" type="text" placeholder="username" >
+      <input formControlName="username" type="text" placeholder="username" (input)="errorMessage=null" >
       <span *ngIf="form.controls.username.touched && form.controls.username.hasError('required')">
         الرجاء ملئ الحقل المطلوب
       </span>
   </div>
   <div>
-      <input formControlName="password" type="password" placeholder="password">
+      <input formControlName="password" type="password" placeholder="password" (input)="errorMessage=null">
       <span *ngIf="form.controls.password.touched && form.controls.password.hasError('required')">
         الرجاء ملئ الحقل المطلوب
       </span>

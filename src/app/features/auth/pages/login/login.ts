@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
-
+export type LoginError = 'network' | 'invalid';
 
 
 @Component({
@@ -13,15 +13,26 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
   styleUrl: './login.scss',
 })
 export class Login {
+
   errorMessage: string | null = null;
   isSubmitting : boolean = false;
-form = new FormGroup({
+  form = new FormGroup({
   username: new FormControl ('',Validators.required),
   password: new FormControl ('',Validators.required)
 });
+logingErrorMessage (err:LoginError) : string | null {
+  if(err === 'network'){
+    return "تحقق من الإنترنت";
+  }
+  else if (err === 'invalid'){
+    return "بيانات الدخول غير صحيحة";
+  }
+  return null;
+}
 onSubmit(){
   if (this.isSubmitting) return;
-  this.errorMessage=null;
+  this.errorMessage = null;
+
 
   if (this.form.invalid){
     this.form.markAllAsTouched();
@@ -30,7 +41,8 @@ onSubmit(){
   }
 
   this.isSubmitting = true;
-  this.errorMessage ="البيانات المدخلة غير صحيحة";
+  const err : LoginError = 'invalid';
+  this.errorMessage = this.logingErrorMessage(err);
 
   setTimeout(()=>{
     this.isSubmitting = false;
