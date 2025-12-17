@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../core/auth/auth.service';
+import { finalize } from 'rxjs';
 
 export type LoginError = 'network' | 'invalid';
 
@@ -15,7 +17,7 @@ export type LoginError = 'network' | 'invalid';
 })
 export class Login {
 
-  constructor(private router : Router){}
+  constructor(private router : Router ,private auth : AuthService){}
 
   errorMessage: string | null = null;
   isSubmitting : boolean = false;
@@ -36,20 +38,27 @@ onSubmit(){
   if (this.isSubmitting) return;
   this.errorMessage = null;
 
-
   if (this.form.invalid){
     this.form.markAllAsTouched();
-
     return;
   }
-
   this.isSubmitting = true;
-  const err : LoginError = 'invalid';
-  this.errorMessage = this.logingErrorMessage(err);
 
-  setTimeout(()=>{
-    this.isSubmitting = false;
-    this.router.navigateByUrl('/app/users');
-  },1000);
+  const payload = {
+    username : this.form.controls.username.value ?? "",
+    password : this.form.controls.password.value ?? ""
+
+  };
+  this.auth.login(payload).pipe(finalize(()=> this.isSubmitting = false))
+  .subscribe({
+    next: ()=> this.router.navigateByUrl('/app/users'),
+    error: (e)=> {
+      console.log('LOGIN ERROR VALUE =', e);
+      console.log('typeof =', typeof e, 'status =', (e as any)?.status);
+      const type: LoginError = (e?.status === 400 || e?.status === 401) ? 'invalid' : 'network';
+      this.errorMessage = this.logingErrorMessage(type);
+      console.log(type);
+    }
+  });
 }
 }
