@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { finalize } from 'rxjs';
+import { AppError } from '../../../../core/http/app-error.model';
 
 export type LoginError = 'network' | 'invalid';
 
@@ -52,12 +53,11 @@ onSubmit(){
   this.auth.login(payload).pipe(finalize(()=> this.isSubmitting = false))
   .subscribe({
     next: ()=> this.router.navigateByUrl('/app/users'),
-    error: (e)=> {
-      console.log('LOGIN ERROR VALUE =', e);
-      console.log('typeof =', typeof e, 'status =', (e as any)?.status);
+    error: (e : AppError)=> {
+
       const type: LoginError = (e?.status === 400 || e?.status === 401) ? 'invalid' : 'network';
       this.errorMessage = this.logingErrorMessage(type);
-      console.log(type);
+
     }
   });
 }
