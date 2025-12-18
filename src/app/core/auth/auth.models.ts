@@ -43,3 +43,16 @@ export type AuthError = {
   status?: number;
   original?: unknown;
 };
+// auth.models.ts
+
+export interface RegisterRequest {
+  name: string;
+  email: string;
+  password: string;
+  userType: 'jobSeeker' | 'employer'; // نوع المستخدم
+}
+
+export interface RegisterResponse {
+  accessToken: string;
+  refreshToken: string;
+};
