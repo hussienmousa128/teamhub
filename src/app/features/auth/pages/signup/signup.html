@@ -1,1 +1,44 @@
-<p>signup works!</p>
+<form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+  <!-- Name -->
+  <div>
+    <label for="name">Name</label>
+    <input id="name" formControlName="name" type="text" placeholder="Enter your name" />
+    <div *ngIf="signupForm.get('name')?.invalid && signupForm.get('name')?.touched">
+      <small *ngIf="signupForm.get('name')?.hasError('required')">Name is required</small>
+    </div>
+  </div>
+
+  <!-- Email -->
+  <div>
+    <label for="email">Email</label>
+    <input id="email" formControlName="email" type="email" placeholder="Enter your email" />
+    <div *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
+      <small *ngIf="signupForm.get('email')?.hasError('required')">Email is required</small>
+      <small *ngIf="signupForm.get('email')?.hasError('email')">Please enter a valid email</small>
+    </div>
+  </div>
+
+  <!-- Password -->
+  <div>
+    <label for="password">Password</label>
+    <input id="password" formControlName="password" type="password" placeholder="Enter your password" />
+    <div *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
+      <small *ngIf="signupForm.get('password')?.hasError('required')">Password is required</small>
+      <small *ngIf="signupForm.get('password')?.hasError('minlength')">Password must be at least 6 characters long</small>
+    </div>
+  </div>
+
+  <!-- User Type -->
+  <div>
+    <label for="userType">User Type</label>
+    <select id="userType" formControlName="userType">
+      <option value="jobSeeker">Job Seeker</option>
+      <option value="employer">Employer</option>
+    </select>
+    <div *ngIf="signupForm.get('userType')?.invalid && signupForm.get('userType')?.touched">
+      <small *ngIf="signupForm.get('userType')?.hasError('required')">User Type is required</small>
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="signupForm.invalid">Sign Up</button>
+</form>

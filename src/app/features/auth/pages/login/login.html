@@ -10,7 +10,7 @@
   </div>
   <div>
       <input formControlName="password" type="password" placeholder="password" (input)="errorMessage=null">
-      <span *ngIf="form.controls.password.touched && form.controls.password.hasError('required')">
+      <span *ngIf="form.controls.password.touched && form.controls.password.hasError('required') && form.controls.password.hasError('minlength')">
         الرجاء ملئ الحقل المطلوب
       </span>
   </div>

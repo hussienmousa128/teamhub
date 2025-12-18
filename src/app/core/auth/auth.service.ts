@@ -5,7 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { StorageService } from '../storage/storage.service';
 import { STORAGE_KEYS } from '../storage/storage.keys';
-import type { LoginRequest, LoginResponse, MeResponse, RefreshResponse } from './auth.models';
+import type { LoginRequest, LoginResponse, MeResponse, RefreshResponse, RegisterRequest } from './auth.models';
 
 
 @Injectable({
@@ -41,6 +41,15 @@ export class AuthService {
       return throwError(() => new Error('No refresh token'));
     }
     return this.http.post<RefreshResponse>(urlR , {refreshToken}).pipe(
+      tap((res)=>{
+        this.storage.set(STORAGE_KEYS.accessToken, res.accessToken);
+        this.storage.set(STORAGE_KEYS.refreshToken, res.refreshToken);
+      })
+    )
+  }
+  registerUser(payload: RegisterRequest) : Observable<RefreshResponse>{
+    const url = `${this.baseUrl}/auth/register`;
+    return this.http.post<RefreshResponse>(url ,payload).pipe(
       tap((res)=>{
         this.storage.set(STORAGE_KEYS.accessToken, res.accessToken);
         this.storage.set(STORAGE_KEYS.refreshToken, res.refreshToken);

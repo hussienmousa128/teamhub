@@ -24,7 +24,7 @@ export class Login {
   isSubmitting : boolean = false;
   form = new FormGroup({
   username: new FormControl ('',Validators.required),
-  password: new FormControl ('',Validators.required)
+  password: new FormControl ('',[Validators.required,Validators.minLength(6)]),
 });
 logingErrorMessage (err:LoginError) : string | null {
   if(err === 'network'){
